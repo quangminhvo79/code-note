@@ -1,0 +1,19 @@
+[Unit]
+Description=Puma Rails Server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+
+StandardOutput=append:/home/ubuntu/apps/warehouse/shared/tmp/access.log
+StandardError=append:/home/ubuntu/apps/warehouse/shared/tmp/access.error.log
+
+WorkingDirectory=/home/ubuntu/apps/warehouse/current
+ExecStart=/root/.rbenv/bin/rbenv exec bundle exec puma -C /home/ubuntu/apps/warehouse/shared/config/puma.rb
+ExecStop=/root/.rbenv/bin/rbenv exec bundle exec pumactl -S /home/ubuntu/apps/warehouse/shared/tmp/pids/puma.state stop
+TimeoutSec=15
+Restart=always
+Environment=RAILS_ENV=production
+[Install]
+WantedBy=multi-user.target
